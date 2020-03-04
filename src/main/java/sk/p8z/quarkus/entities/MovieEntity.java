@@ -1,5 +1,6 @@
 package sk.p8z.quarkus.entities;
 
+import org.hibernate.annotations.Formula;
 import sk.p8z.quarkus.model.Movie;
 
 import javax.persistence.Column;
@@ -21,8 +22,18 @@ public class MovieEntity {
     private Integer length;
     @Column
     private String genres;
+    @Formula("lower(title)")
+    private String lowercaseTitle;
 
     public MovieEntity() {
+    }
+
+    public MovieEntity(Movie movie) {
+        id = movie.getId();
+        title = movie.getTitle();
+        year = movie.getYear();
+        length = movie.getLength();
+        genres = movie.getGenres();
     }
 
     public static Movie toMovie(MovieEntity entity) {
@@ -73,5 +84,9 @@ public class MovieEntity {
 
     public void setGenres(String genres) {
         this.genres = genres;
+    }
+
+    public String getLowercaseTitle() {
+        return lowercaseTitle;
     }
 }

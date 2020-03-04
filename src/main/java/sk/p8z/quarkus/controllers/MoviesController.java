@@ -11,6 +11,7 @@ import sk.p8z.quarkus.repositories.MoviesRepositary;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,16 +32,22 @@ public class MoviesController implements MovieApi {
 
     @Override
     public ResponseEntity<Movie> moviesMovieIdGet(Integer id) {
-        return null;
+        MovieEntity entity = moviesRepositary.findById(id).orElseThrow(NotFoundException::new);
+        Movie movie = MovieEntity.toMovie(entity);
+        return ResponseEntity.ok(movie);
     }
 
     @Override
     public ResponseEntity<Movie> moviesMoviePost(@Valid Movie movie) {
-        return null;
+        MovieEntity entity = new MovieEntity(movie);
+        entity = moviesRepositary.save(entity);
+        return ResponseEntity.ok(MovieEntity.toMovie(entity));
     }
 
     @Override
     public ResponseEntity<List<Movie>> moviesTitleGet(String title) {
-        return null;
+        List<MovieEntity> entities = moviesRepositary.findMovieEntitiesByLowercaseTitleContaining(title);
+        List<Movie> movies = entities.stream().map(MovieEntity::toMovie).collect(Collectors.toList());
+        return ResponseEntity.ok(movies);
     }
 }
