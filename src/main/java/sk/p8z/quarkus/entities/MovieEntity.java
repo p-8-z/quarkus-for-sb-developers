@@ -19,5 +19,4 @@ public class MovieEntity {
     private Integer length;
     @Column
     private String genres;
-    private String lowercaseTitle;
 }
