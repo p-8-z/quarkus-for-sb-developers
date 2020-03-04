@@ -1,5 +1,7 @@
 package sk.p8z.quarkus.entities;
 
+import sk.p8z.quarkus.model.Movie;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,4 +21,57 @@ public class MovieEntity {
     private Integer length;
     @Column
     private String genres;
+
+    public MovieEntity() {
+    }
+
+    public static Movie toMovie(MovieEntity entity) {
+        Movie movie = new Movie();
+        movie.setYear(entity.getYear());
+        movie.setTitle(entity.getTitle());
+        movie.setLength(entity.getLength());
+        movie.setId(entity.getId());
+        movie.setGenres(entity.getGenres());
+        return movie;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getLength() {
+        return length;
+    }
+
+    public void setLength(Integer length) {
+        this.length = length;
+    }
+
+    public String getGenres() {
+        return genres;
+    }
+
+    public void setGenres(String genres) {
+        this.genres = genres;
+    }
 }
