@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+  description: This is a simple Movie Database API
+  version: "0.0.1"
+  title: Simple Movie Database API
+tags:
+  - name: movie
+paths:
+  /movies:
+    get:
+      tags:
+        - movie
+      summary: Gets a list of movies.
+      parameters:
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+      responses:
+        '200':
+          description: A list of movies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+  /movies/{title}:
+    get:
+      tags:
+        - movie
+      summary: Gets a list of movies by phrase.
+      parameters:
+        - in: path
+          name: title
+          schema:
+            type: string
+          required: true
+          description: The movie name or phrase
+      responses:
+        '200':
+          description: A list of movies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+  /movies/movie/{id}:
+    get:
+      tags:
+        - movie
+      summary: Gets movie by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The movie ID
+      responses:
+        '200':
+          description: A single movie.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+  /movies/movie:
+    post:
+      tags:
+        - movie
+      summary: Save a movie
+      requestBody:
+        description: Movie DTO
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        '200':
+          description: A single movie.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+components:
+  parameters:
+    offsetParam:
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      description: The number of items to skip before starting to collect the result set.
+    limitParam:
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+      description: The numbers of items to return.
+  schemas:
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        year:
+          type: integer
+        length:
+          type: integer
+        genres:
+          type: string
